@@ -1,5 +1,4 @@
 <x-app-layout>
-            
     <div class="pagetitle">
         <h1>{{ __('Post') }}</h1>
         <nav>
@@ -7,7 +6,6 @@
                 <li class="breadcrumb-item"><a href="{{ route('dashboard')}}">{{__('Dashboard')}}</a></li>
                 <li class="breadcrumb-item active">{{ __('Resource') }}</li>
                 <li class="breadcrumb-item active">{{ __('Post') }}</li>
-                
             </ol>
         </nav>
     </div>
@@ -23,22 +21,20 @@
                     </div>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
-                            // Use setTimeout to hide the alert after 5 seconds
                             setTimeout(function() {
                                 var alertElement = document.getElementById('autoDismissAlert');
                                 if (alertElement) {
-                                    // Use Bootstrap's alert 'close' method to hide it
                                     var alert = new bootstrap.Alert(alertElement);
                                     alert.close();
                                 }
-                            }, 5000); // 5000 milliseconds = 5 seconds
+                            }, 5000);
                         });
                     </script>
                 @endif
                 <div class="card p-4">
                     <div class="card-body">
                         <div class="text-end">
-                            <a href="{{ route('post.create') }}"  type="button" class="btn btn-primary" ><i class="bi bi-file-earmark-plus-fill me-1  "></i> Add a New Options</a> 
+                            <a href="{{ route('post.create') }}"  type="button" class="btn btn-primary" ><i class="bi bi-file-earmark-plus-fill me-1"></i> Add a New Option</a> 
                         </div>
                         <hr class="my-5">
                         <table class="table datatable">
@@ -54,17 +50,17 @@
                                 @isset($posts)
                                     @foreach($posts as $post)
                                         <tr>
-                                            <td>{{$post -> subject}}</td>
-                                            <td>{{$post -> post}}</td>
-                                            <td>{{ ($post -> status == 1 ? 'Published':'Unpublished') }}</td>
+                                            <td>{{$post->subject}}</td>
+                                            <td>{{$post->post}}</td>
+                                            <td>{{ ($post->status == 1 ? 'Published':'Unpublished') }}</td>
                                             <td>
-                                            <a href="{{ route('post.show', $post) }}" class="btn btn-dark m-1" fdprocessedid="sh46d8"><i class="bi bi-folder-symlink"></i></a>
-                                            <a href="{{ route('post.edit', $post) }}" type="button" class="btn btn-success m-1" fdprocessedid="sh46d8"><i class="bi bi-pencil-square"></i></a>
-                                            <form action="{{ route('post.destroy', $post->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger m-1" fdprocessedid="sh46d8"><i class="bi bi-trash-fill"></i></button>
-                                            </form>
+                                                <a href="{{ route('post.show', $post) }}" class="btn btn-dark m-1"><i class="bi bi-folder-symlink"></i></a>
+                                                <a href="{{ route('post.edit', $post) }}" type="button" class="btn btn-success m-1"><i class="bi bi-pencil-square"></i></a>
+                                                <form action="{{ route('post.destroy', $post->id) }}" method="post" class="d-inline-block delete-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger m-1 delete-btn"><i class="bi bi-trash-fill"></i></button>
+                                                </form>
                                             </td>                  
                                         </tr>
                                     @endforeach   
@@ -77,4 +73,17 @@
         </div>
     </section>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.delete-form');
+            deleteForms.forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    if (confirm('Are you sure you want to delete this post?')) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>
